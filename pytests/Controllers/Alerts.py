@@ -1,5 +1,6 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import *
+import  DataLayer.DocumentDb.Queries as queries
 
 api = Namespace('Alerts', description='Alerts related operations')
 
@@ -16,6 +17,14 @@ create_alert_response_model = api.model('create_alert_response_model', {
     'InternalData': fields.List(fields.Nested(alert_advanced_data)),
     'alert_name': fields.String(required=True, description='The alert name')
 
+})
+
+
+
+get_all_alerts_response_model = api.model('get_all_alerts_response', {
+    'id': fields.String(required=True, description='The alert name'),
+    'alert_name': fields.String(required=True, description='The alert name'),
+    'alert_category': fields.String(required=True, description='The alert name')
 })
 
 
@@ -48,13 +57,14 @@ Alerts = [
 
 
 
-@api.route('/')
-class CatList(Resource):
-    @api.doc('list_alerts')
-    @api.marshal_list_with(create_alert_response_model)
-    def get(self):
-        '''List all alerts'''
-        return Alerts
+# @api.route('/aaa')
+# class Cat(Resource):
+#     @api.doc('list_alerts')
+#     #@api.marshal_list_with(create_alert_response_model)
+#     def get(self):
+#         '''List all alerts'''
+#         mydocument = queries.get_alert()
+#         return mydocument
 
 @api.route('/<id>')
 @api.param('id', 'The alert identifier')
@@ -86,6 +96,16 @@ class Cat(Resource):
         return adf
         #return jsonpickle.encode(adf)
         '''Fetch an alert given its identifier'''
+
+
+    @api.doc('list_alerts')
+    @api.marshal_with(get_all_alerts_response_model)
+    #@api.marshal_list_with(create_alert_response_model)
+    def get(self):
+        '''List all alerts'''
+        mydocument = queries.get_alert()
+        return mydocument
+
 
 
 @api.route('/health')
