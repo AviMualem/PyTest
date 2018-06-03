@@ -6,7 +6,7 @@ from Controllers import api
 from Middlewars import CorrelationId
 
 # Bootstrapping code (db,web api,swagger, middleware)
-DocumentDbConfigurationExtractor.LoadDbCoonectionDetails()
+#DocumentDbConfigurationExtractor.LoadDbCoonectionDetails()
 app = Flask(__name__)
 api.init_app(app)
 app.before_request(CorrelationId.ExtractCorrelationId)

@@ -2,14 +2,17 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 import configparser
 import pytest
+import os
 
 @pytest.fixture()
 def server_backend_prefix():
     print("Initalizing server prefix")
-    config = configparser.ConfigParser()
-    configFile = config.read('Config.ini')
-    backendAddress=config['BackendAddress']['uri']
-    backendport = config['BackendAddress']['port']
+    # config = configparser.ConfigParser()
+    # configFile = config.read('Config.ini')
+    # backendAddress=config['BackendAddress']['uri']
+    # backendport = config['BackendAddress']['port']
+    backendAddress =os.environ['backend_address']
+    backendport = os.environ['backend_port']
     url = "http://" + backendAddress + ":" + backendport  # Set destination URL here
     yield url
     print("teardown")

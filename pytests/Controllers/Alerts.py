@@ -1,9 +1,10 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import *
 import  DataLayer.DocumentDb.Queries as queries
-
+import DataLayer.Repositories
 api = Namespace('Alerts', description='Alerts related operations')
-
+import os
+import DataLayer.DocumentDb.ConnectionManager
 
 
 alert_advanced_data = api.model('advanced_alerts_data', {
@@ -103,8 +104,9 @@ class Cat(Resource):
     #@api.marshal_list_with(create_alert_response_model)
     def get(self):
         '''List all alerts'''
-        mydocument = queries.get_alert()
-        return mydocument
+        a = DataLayer.Repositories.AlertsRepository.get_all_alerts()
+        return a
+        # return mydocument
 
 
 
@@ -114,6 +116,7 @@ class HealthCheck(Resource):
     @api.doc('check alert server health')
     def post(self):
         '''Checks alert server health state'''
+
         return "im 0kay :). i mean it"
         '''Fetch an alert given its identifier'''
 

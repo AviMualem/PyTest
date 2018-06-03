@@ -7,5 +7,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 
-RUN rm -r venv
+#RUN rm -r venv
 CMD [ "python", "./app.py" ]
